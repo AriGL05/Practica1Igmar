@@ -11,6 +11,8 @@ class DashboardController extends Controller
         $this->middleware('auth'); 
     }
     public function index(){
-        return view('dashboard.index');
+        return response()->view('dashboard.index')
+        ->header('Cache-Control', 'no-cache, no-store, max-age=0, must-revalidate')
+        ->header('Pragma', 'no-cache');
     }
 }
