@@ -23,21 +23,21 @@ Route::get('/login', function () {
     return view('index.login');
 })->name('index.login');
 
-Route::get('/verifycode', function () {
-    return view('index.verifycode');
+Route::get('/verifycode/{userId}', function ($userId) {
+    return view('index.verifycode', ['userId' => $userId]);
 })->name('index.verifycode');
 
-Route::post('/verifycode',[AuthController::class,'verifycode']);
+Route::post('/verifycode/{userId}', [AuthController::class, 'verifyCode'])->name('index.verifycode.verify');
 
-Route::post('/login',[AuthController::class,'login']);
-Route::post('/logout',[AuthController::class,'logout'])->name('logout');
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
 Route::get('/signup', function () {
     return view('index.signup');
 })->name('index.signup');
 
-Route::post('/signup',[UserController::class,'register']);
+Route::post('/signup', [UserController::class, 'register']);
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->name('dashboard.index')

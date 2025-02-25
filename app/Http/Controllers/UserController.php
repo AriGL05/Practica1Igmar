@@ -38,15 +38,23 @@ class UserController extends Controller
             $validator = Validator::make($request->all(), [
                 'username' => 'required|string|max:100|min:3',
                 'email' => 'required|email|unique:users,email',
-                'password' => 'required|string|min:6',
+                'password' => 'required|string|min:8|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/',
                 'g-recaptcha-response' => 'required',
+            ], [
+                'username.min' => ' The name must be at least 3 characters.',
+                'email.required' => ' The email field is required.',
+                'email.email' => ' The email must be a valid email address.',
+                'email.unique' => ' The email has already been taken.',
+                'password.required' => ' The password field is required.',
+                'password.min' => ' The password must be at least 8 characters.',
+                'password.regex' => ' The password must have Mixed Case, numbers and sepecial characters.',
             ]);
-    
+
             if ($validator->fails()) {
                 return redirect()
-                ->back()
-                ->withErrors($validator)
-                ->withInput();
+                    ->back()
+                    ->withErrors($validator)
+                    ->withInput();
             }
             $user = new User();
             $user->username = $request->username;
@@ -59,28 +67,27 @@ class UserController extends Controller
             } catch (\Exception $e) {
                 Log::critical($e);
                 return redirect()
-                ->back()
-                ->withErrors(["msg"=>"Internal error. User was not saved."])
-                ->withInput();
+                    ->back()
+                    ->withErrors(["msg" => "Internal error. User was not saved."])
+                    ->withInput();
             }
-    
+
             try {
                 //Sending Email to user email
                 Mail::to($user->email)->send(new EmailVerification($user));
-            }catch (\Exception $e){
+            } catch (\Exception $e) {
                 Log::critical($e);
                 $user->delete();
                 return redirect()
-                ->back()
-                ->withErrors(["msg"=>"Internal error. Email was not sent."])
-                ->withInput();
+                    ->back()
+                    ->withErrors(["msg" => "Internal error. Email was not sent."])
+                    ->withInput();
             }
             auth()->login($user);
             session()->flash('success', 'Registered successfully! Please check your email to verify your account.');
             return redirect()->back();
-            
-        } 
-        else {
+
+        } else {
             return redirect()->back()->withErrors(['captcha' => 'ReCAPTCHA verification failed. Please try again.'])->withInput();
         }
     }

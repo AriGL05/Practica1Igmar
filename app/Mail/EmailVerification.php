@@ -51,10 +51,10 @@ class EmailVerification extends Mailable
 
         $url = URL::signedRoute('email.verify', ['user_id' => $this->user->id, 'token' => $newToken]);
 
-        return $this->view('email.emailverification', ['url' => $url])
-            ->with([
-                'url' => $url,
-            ]);
+        return $this->markdown('email.emailverification', ['url' => $url])
+            ->with(['url' => $url]);
+
+
     }
 
     /**

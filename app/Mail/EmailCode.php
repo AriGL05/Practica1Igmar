@@ -64,6 +64,7 @@ class EmailCode extends Mailable
      */
     public function build()
     {
-        return $this->view('email.emailcode');
+        return $this->markdown('email.emailcode')
+            ->with(['code' => $this->code]);
     }
 }
