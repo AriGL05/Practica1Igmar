@@ -4,18 +4,23 @@
     <table style="width: 100%; border-collapse: collapse;">
         <thead>
             <tr style="border-bottom: 1px solid #ddd;">
-                <th style="padding: 8px; text-align: left;">ID</th>
                 <th style="padding: 8px; text-align: left;">Name</th>
-                <th style="padding: 8px; text-align: left;">Email</th>
-                <th style="padding: 8px; text-align: left;">Actions</th>
+                <th style="padding: 8px; text-align: left;">Planet</th>
+                <th style="padding: 8px; text-align: left;">Diameter (km)</th>
+                <th style="padding: 8px; text-align: left;">Mass (kg)</th>
+                <th style="padding: 8px; text-align: left;">Year Discovered</th>
+                <th style="padding: 8px; text-align: left;">Discovered By</th>
             </tr>
         </thead>
         <tbody>
-            @forelse ($users as $user)
+            @forelse ($moons as $moon)
                 <tr style="border-bottom: 1px solid #eee;">
-                    <td style="padding: 8px;">{{ $user->id }}</td>
-                    <td style="padding: 8px;">{{ $user->name }}</td>
-                    <td style="padding: 8px;">{{ $user->email }}</td>
+                    <td style="padding: 8px;">{{ $moon->name }}</td>
+                    <td style="padding: 8px;">{{ $moon->planet }}</td>
+                    <td style="padding: 8px;">{{ $moon->diameter_km }}</td>
+                    <td style="padding: 8px;">{{ $moon->mass_kg }}</td>
+                    <td style="padding: 8px;">{{ $moon->discovery_year }}</td>
+                    <td style="padding: 8px;">{{ $moon->discovery_by }}</td>
                     <td style="padding: 8px;">
                         <a href="{{ route('users.edit', $user) }}"
                             style="text-decoration: none; padding: 5px 10px; background-color: #007bff; color: white; border-radius: 5px; margin-right: 5px; font-size: 0.9em;">Edit</a>

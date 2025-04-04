@@ -13,45 +13,32 @@
             width: 100%;
             overflow: hidden;
             position: relative;
-            /* Needed for absolute positioning of children */
         }
 
         body {
             background: #0c0b10 url("/images/stars2.jpg") no-repeat center center fixed;
             background-size: cover;
             color: white;
-            /* Default text color */
             display: flex;
             flex-direction: column;
-            /* Arrange items vertically */
             align-items: center;
-            /* Center items horizontally */
             justify-content: space-between;
-            /* Distribute space between items */
             padding: 20px 0;
-            /* Add some padding at the top and bottom */
             text-align: center;
-            /* Center inline content */
             margin: 0;
-            /* Remove default body margin */
         }
 
         .floating-user-table {
-            background-color: rgba(255, 255, 255, 0.9);
-            /* Slightly less transparent */
+            background-color: rgba(233, 243, 147, 0.7);
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            /* More prominent shadow */
             z-index: 10;
-            width: 80%;
-            /* Adjust width as needed */
-            max-width: 600px;
-            /* Set a maximum width */
+            width: 90%;
+            max-width: 800px;
+            /* Adjusted max-width */
             margin-bottom: 30px;
-            /* Space below the table */
             text-align: left;
-            /* Align text within the table to the left */
         }
 
         .floating-user-table h2 {
@@ -59,7 +46,6 @@
             margin-bottom: 15px;
             color: #333;
             text-align: center;
-            /* Center the table title */
         }
 
         .floating-user-table table {
@@ -67,7 +53,7 @@
             border-collapse: collapse;
             border-radius: 5px;
             overflow: hidden;
-            background-color: white;
+            background-color: rgba(121, 122, 112, 0.7);
             color: #333;
         }
 
@@ -79,12 +65,19 @@
         }
 
         .floating-user-table th {
-            background-color: #f8f9fa;
+            background-color: rgba(14, 30, 120, 0.7);
             font-weight: bold;
         }
 
         .floating-user-table tr:last-child td {
             border-bottom: none;
+        }
+
+        .floating-user-table .actions {
+            display: flex;
+            /* Use flexbox to arrange items horizontally */
+            align-items: center;
+            /* Vertically align items in the center */
         }
 
         .floating-user-table .actions a,
@@ -96,6 +89,8 @@
             text-decoration: none;
             font-size: 0.9em;
             cursor: pointer;
+            margin-right: 5px;
+            /* Add some spacing between the buttons */
         }
 
         .floating-user-table .actions a {
@@ -108,6 +103,8 @@
             background-color: #dc3545;
             color: white;
             border: 1px solid #dc3545;
+            margin-left: 5px;
+            /* Add some spacing between the buttons */
         }
 
         .floating-user-table .actions a:hover {
@@ -147,7 +144,6 @@
             transition: .2s ease-in;
             cursor: pointer;
             text-decoration: none;
-
         }
 
         .logout-button:hover {
@@ -157,13 +153,13 @@
         .moon {
             height: 100px;
             width: 100px;
+            margin-top: 30px;
             margin-bottom: 30px;
             border-radius: 50%;
             background: #B5BCC6;
             overflow: hidden;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
             position: relative;
-            /* Needed for pseudo-element positioning */
         }
 
         .moon:before,
@@ -181,17 +177,14 @@
             background: #0c0b10;
             box-shadow: inset -10px 0 7px 0px #B5BCC6;
             animation: before-fullmoon 5s linear infinite;
-            /* Corrected animation name */
         }
 
         .moon:after {
             background: #B5BCC6;
             box-shadow: inset -10px 0 7px 0px #B5BCC6;
             animation: after-fullmoon 5s linear infinite;
-            /* Corrected animation name */
         }
 
-        /* Updated Animations */
         @keyframes before-fullmoon {
 
             0%,
@@ -324,47 +317,84 @@
                 transform: rotate(180deg);
             }
         }
+
+        .add-moon-button {
+            width: auto;
+            padding: 10px 20px;
+            display: inline-block;
+            color: #fff;
+            background: #573b8a;
+            font-size: 1em;
+            font-weight: bold;
+            outline: none;
+            border: none;
+            border-radius: 5px;
+            transition: .2s ease-in;
+            cursor: pointer;
+            text-decoration: none;
+            margin-bottom: 10px;
+            /* Add some space between button and table */
+        }
+
+        .add-moon-button:hover {
+            background: #6d44b8;
+        }
+
+        .table-container {
+            overflow-y: auto;
+            max-height: 400px;
+        }
     </style>
 </head>
 
 <body>
     <div class="moon"></div>
 
-    @if (Route::has('users.list'))
+    @if (Route::has('moons.list'))
         <div class="floating-user-table">
-            <h2>Users</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($users as $user)
+            <div style="text-align: center;">
+                <button id="addMoonButton" class="add-moon-button" href="{{ route('moons.add') }}">Add Moon</button>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
                         <tr>
-                            <td>{{ $user->id }}</td>
-                            <td>{{ $user->name }}</td>
-                            <td>{{ $user->email }}</td>
-                            <td class="actions">
-                                <a href="{{ route('users.edit', $user) }}">Edit</a>
-                                <form action="{{ route('users.destroy', $user) }}" method="POST" style="display: inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                        onclick="return confirm('Are you sure you want to delete this user?')">Delete</button>
-                                </form>
-                            </td>
+                            <th>Name</th>
+                            <th>Planet</th>
+                            <th>Diameter (km)</th>
+                            <th>Mass (kg)</th>
+                            <th>Year Discovered</th>
+                            <th>Discovered By</th>
+                            <th>Actions</th>
                         </tr>
-                    @empty
-                        <tr class="empty-row">
-                            <td colspan="4">No users found.</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @forelse ($moons as $moon)
+                            <tr>
+                                <td>{{ $moon->name }}</td>
+                                <td>{{ $moon->planet }}</td>
+                                <td>{{ $moon->diameter_km }}</td>
+                                <td>{{ $moon->mass_kg }}</td>
+                                <td>{{ $moon->discovery_year }}</td>
+                                <td>{{ $moon->discovery_by }}</td>
+                                <td class="actions">
+                                    <a href="{{ route('moons.edit', $moon) }}">Edit</a>
+                                    <form action="{{ route('moons.destroy', $moon) }}" method="POST" style="display: inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            onclick="return confirm('Are you sure you want to delete this moon?')">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr class="empty-row">
+                                <td colspan="7">No moons found.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
         </div>
     @endif
 

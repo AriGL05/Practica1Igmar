@@ -43,10 +43,11 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
     ->name('dashboard.index')
     ->middleware('auth');
 
-Route::get('/users', [DashboardController::class, 'list'])->name('users.list');
-Route::get('/users/{user}/edit', [DashboardController::class, 'edit'])->name('users.edit');
-Route::put('/users/{user}', [DashboardController::class, 'update'])->name('users.update');
-Route::delete('/users/{user}', [DashboardController::class, 'destroy'])->name('users.destroy');
+Route::get('/moons', [DashboardController::class, 'list'])->name('moons.list');
+Route::post('/moons', [DashboardController::class, 'store'])->name('moons.add');
+Route::get('/moons/{moon}/edit', [DashboardController::class, 'edit'])->name('moons.edit');
+Route::put('/moons/{moon}', [DashboardController::class, 'update'])->name('moons.update');
+Route::delete('/moons/{moon}', [DashboardController::class, 'destroy'])->name('moons.destroy');
 
 
 Route::any('/email/verify/{user_id}', [EmailController::class, 'verify_email'])->name('email.verify')->where('user_id', '[0-9]+');
