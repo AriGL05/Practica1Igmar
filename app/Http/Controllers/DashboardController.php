@@ -21,17 +21,12 @@ class DashboardController extends Controller
     }
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,'
-            // Add other validation rules as needed
-        ]);
-        return redirect()->route('moons.list')->with('success', 'Moon updated successfully!');
+        return redirect()->route('dashboard.add');
     }
     public function list()
     {
         $moons = Moon::all();
-        return view('moons.list', compact('moons'));
+        return view('dashboard.list', compact('moons'));
     }
 
     public function edit(Moon $moon)
@@ -49,12 +44,12 @@ class DashboardController extends Controller
 
         $moon->update($request->all());
 
-        return redirect()->route('moons.list')->with('success', 'Moon updated successfully!');
+        return redirect()->route('dashboard.list')->with('success', 'Moon updated successfully!');
     }
 
     public function destroy(Moon $moon)
     {
         $moon->delete();
-        return redirect()->route('moons.list')->with('success', 'Moon deleted successfully!');
+        return redirect()->route('dashboard.list')->with('success', 'Moon deleted successfully!');
     }
 }
