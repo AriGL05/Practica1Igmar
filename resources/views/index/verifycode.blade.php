@@ -26,6 +26,9 @@ Verify Code
                 <div class="g-recaptcha mt-4" data-sitekey={{config('services.recaptcha.key')}}
                     data-callback="enableSubmitButton" data-expired-callback="disableSubmitButton"></div>
             </div>
+            <div class="badge bg-primary">
+                Server Node: {{ config('app.node') }}
+            </div>
         </form>
     </div>
 @endsection
