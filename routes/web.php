@@ -44,7 +44,8 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware('auth');
 
 Route::get('/moons', [DashboardController::class, 'list'])->name('moons.list');
-Route::post('/moons', [DashboardController::class, 'store'])->name('moons.add');
+Route::get('/moons/create', [DashboardController::class, 'store'])->name('moons.create');
+Route::post('/moons', [DashboardController::class, 'add'])->name('moons.store');
 Route::get('/moons/{moon}/edit', [DashboardController::class, 'edit'])->name('moons.edit');
 Route::put('/moons/{moon}', [DashboardController::class, 'update'])->name('moons.update');
 Route::delete('/moons/{moon}', [DashboardController::class, 'destroy'])->name('moons.destroy');

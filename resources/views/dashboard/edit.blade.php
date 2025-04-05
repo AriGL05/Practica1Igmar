@@ -7,7 +7,14 @@
     <div class="floating-user-table">
         <h2>Edit Moon: {{ $moon->name }}</h2>
 
-        <form action="{{ route('moons.update', $moon->id) }}" method="POST">
+        <div class="form-navigation">
+            <a href="{{ route('moons.list') }}" class="back-button">Back to Moons</a>
+            <div class="badge bg-primary">
+                Server Node: {{ config('app.node') }}
+            </div>
+        </div>
+
+        <form action="{{ route('moons.update', $moon->id) }}" method="POST" class="two-column-form">
             @csrf
             @method('PUT')
 
@@ -33,7 +40,9 @@
 
             <div class="form-group">
                 <label for="discovery_year">Year Discovered:</label>
-                <input type="number" name="discovery_year" id="discovery_year" value="{{ $moon->discovery_year }}" required>
+                <input type="number" name="discovery_year" id="discovery_year" maxlength="4" pattern="[0-9]{4}"
+                    oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                    value="{{ $moon->discovery_year }}" required>
             </div>
 
             <div class="form-group">
@@ -48,8 +57,69 @@
 @endsection {{-- End the content section --}}
 
 <style>
-    .form-group {
+    .floating-user-table {
+        /* ... other styles ... */
+    }
+
+    .form-navigation {
+        display: flex;
+        /* Enable Flexbox */
+        justify-content: space-between;
+        /* Put space between the items */
+        align-items: center;
+        /* Vertically align items in the center */
         margin-bottom: 15px;
+        /* Add some space below the navigation */
+    }
+
+    .back-button {
+        display: inline-block;
+        padding: 8px 15px;
+        text-decoration: none;
+        color: #fff;
+        background: #573b8a;
+        /* Example gray color */
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+    .back-button:hover {
+        background: #6d44b8;
+    }
+
+    .badge {
+        padding: 0.5em 0.8em;
+        border-radius: 0.25em;
+        font-size: 0.9em;
+        color: white;
+    }
+
+    .bg-primary {
+        background-color: rgb(14, 9, 55);
+        /* Example primary color */
+    }
+
+    .two-column-form {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        /* Creates two equal columns */
+        gap: 15px;
+        /* Space between the columns and rows */
+        padding: 15px 0;
+        /* Add some padding around the form groups */
+    }
+
+    .two-column-form .form-group {
+        margin-bottom: 0;
+        /* Remove default margin on form-groups */
+    }
+
+    /* Ensure the button spans both columns */
+    .two-column-form button {
+        grid-column: 1 / 3;
+        /* Start at column 1, span to column 3 */
+        margin-top: 20px;
+        /* Add some space above the button */
     }
 
     .form-group label {

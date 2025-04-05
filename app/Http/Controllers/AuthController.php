@@ -156,7 +156,7 @@ class AuthController extends Controller
                 $user->save();
                 Auth::login($user);
 
-                return redirect()->route('dashboard.index')->with('success', 'Verification successful!');
+                return redirect()->route('moons.list')->with('success', 'Verification successful!');
             }
             return redirect()
                 ->back()

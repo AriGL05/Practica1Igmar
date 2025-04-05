@@ -3,8 +3,14 @@
 
     <div class="floating-user-table">
         <div style="text-align: center;">
-            <button id="addMoonButton" class="add-moon-button" href="{{ route('moons.add') }}">Add Moon</button>
+            <a href="{{ route('moons.create') }}">
+                <button id="addMoonButton" class="add-moon-button">Add Moon</button>
+            </a>
         </div>
+        <div class="badge bg-primary">
+            Server Node: {{ config('app.node') }}
+        </div>
+
         <div class="table-container">
             <table>
                 <thead>

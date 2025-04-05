@@ -19,9 +19,24 @@ class DashboardController extends Controller
             ->header('Cache-Control', 'no-cache, no-store, max-age=0, must-revalidate')
             ->header('Pragma', 'no-cache');
     }
-    public function store(Request $request)
+    public function add(Request $request)
     {
-        return redirect()->route('dashboard.add');
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'planet' => 'required|string|max:255',
+            'diameter_km' => 'required|numeric',
+            'mass_kg' => 'required|string|max:255',
+            'discovery_year' => 'required|integer',
+            'discovery_by' => 'required|string|max:255',
+        ]);
+
+        Moon::create($validatedData);
+
+        return redirect()->route('moons.list')->with('success', 'Moon updated successfully!');
+    }
+    public function store()
+    {
+        return view('dashboard.add');
     }
     public function list()
     {
@@ -36,20 +51,23 @@ class DashboardController extends Controller
 
     public function update(Request $request, Moon $moon)
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $moon->id,
-            // Add other validation rules as needed
+            'planet' => 'required|string|max:255',
+            'diameter_km' => 'required|numeric',
+            'mass_kg' => 'required|string|max:255',
+            'discovery_year' => 'required|integer',
+            'discovery_by' => 'required|string|max:255',
         ]);
 
-        $moon->update($request->all());
+        $moon->update($validatedData);
 
-        return redirect()->route('dashboard.list')->with('success', 'Moon updated successfully!');
+        return redirect()->route('moons.list')->with('success', 'Moon updated successfully!');
     }
 
     public function destroy(Moon $moon)
     {
         $moon->delete();
-        return redirect()->route('dashboard.list')->with('success', 'Moon deleted successfully!');
+        return redirect()->route('moons.list')->with('success', 'Moon deleted successfully!');
     }
 }

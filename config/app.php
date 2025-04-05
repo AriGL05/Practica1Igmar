@@ -43,6 +43,9 @@ return [
 
     'debug' => (bool) env('APP_DEBUG', false),
 
+    'node' => env('APP_NODE', 'unknown'),
+
+
     /*
     |--------------------------------------------------------------------------
     | Application URL

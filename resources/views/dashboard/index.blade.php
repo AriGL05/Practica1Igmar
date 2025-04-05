@@ -35,6 +35,7 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             z-index: 10;
             width: 90%;
+            height: 420px;
             max-width: 800px;
             /* Adjusted max-width */
             margin-bottom: 30px;
@@ -153,7 +154,6 @@
         .moon {
             height: 100px;
             width: 100px;
-            margin-top: 30px;
             margin-bottom: 30px;
             border-radius: 50%;
             background: #B5BCC6;
@@ -342,7 +342,7 @@
 
         .table-container {
             overflow-y: auto;
-            max-height: 400px;
+            max-height: 350px;
         }
     </style>
 </head>
