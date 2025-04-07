@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
 use App\Models\Moon;
+use Illuminate\Support\Facades\Validator;
 
 class DashboardController extends Controller
 {
@@ -21,16 +21,37 @@ class DashboardController extends Controller
     }
     public function add(Request $request)
     {
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'planet' => 'required|string|max:255',
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:100',
+            'planet' => 'required|string|max:100',
             'diameter_km' => 'required|numeric',
-            'mass_kg' => 'required|string|max:255',
-            'discovery_year' => 'required|integer',
-            'discovery_by' => 'required|string|max:255',
+            'mass_kg' => 'required|string|max:100',
+            'discovery_year' => 'nullable|integer|digits:4',
+            'discovery_by' => 'nullable|string|max:200',
         ]);
 
-        Moon::create($validatedData);
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $moon = new Moon();
+        $moon->name = $request->name;
+        $moon->planet = $request->planet;
+        $moon->diameter_km = $request->diameter_km;
+        $moon->mass_kg = $request->mass_kg;
+        $moon->discovery_year = $request->discovery_year;
+        $moon->discovery_by = $request->discovery_by;
+        try {
+            $moon->save();
+        } catch (\Exception $e) {
+            return redirect()
+                ->back()
+                ->withErrors(["msg" => "Internal error. Moon was not saved."])
+                ->withInput();
+        }
 
         return redirect()->route('moons.list')->with('success', 'Moon updated successfully!');
     }
@@ -49,18 +70,39 @@ class DashboardController extends Controller
         return view('dashboard.edit', compact('moon'));
     }
 
-    public function update(Request $request, Moon $moon)
+    public function update(Request $request, $moon)
     {
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'planet' => 'required|string|max:255',
+        $moon = Moon::find($moon);
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:100',
+            'planet' => 'required|string|max:100',
             'diameter_km' => 'required|numeric',
-            'mass_kg' => 'required|string|max:255',
-            'discovery_year' => 'required|integer',
-            'discovery_by' => 'required|string|max:255',
+            'mass_kg' => 'required|string|max:100',
+            'discovery_year' => 'nullable|integer|digits:4',
+            'discovery_by' => 'nullable|string|max:200',
         ]);
 
-        $moon->update($validatedData);
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $moon->name = $request->name;
+        $moon->planet = $request->planet;
+        $moon->diameter_km = $request->diameter_km;
+        $moon->mass_kg = $request->mass_kg;
+        $moon->discovery_year = $request->discovery_year;
+        $moon->discovery_by = $request->discovery_by;
+        try {
+            $moon->save();
+        } catch (\Exception $e) {
+            return redirect()
+                ->back()
+                ->withErrors(["msg" => "Internal error. Moon was not saved."])
+                ->withInput();
+        }
 
         return redirect()->route('moons.list')->with('success', 'Moon updated successfully!');
     }

@@ -34,8 +34,8 @@
                             <td>{{ $moon->discovery_year }}</td>
                             <td>{{ $moon->discovery_by }}</td>
                             <td class="actions">
-                                <a href="{{ route('moons.edit', $moon) }}">Edit</a>
-                                <form action="{{ route('moons.destroy', $moon) }}" method="POST" style="display: inline;">
+                                <a href="{{ route('moons.edit', $moon->id) }}">Edit</a>
+                                <form action="{{ route('moons.destroy', $moon->id) }}" method="POST" style="display: inline;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit"

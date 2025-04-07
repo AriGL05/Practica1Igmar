@@ -2,7 +2,7 @@
 
 @section('content') {{-- Start the content section --}}
 
-    <div class="floating-user-table">
+    <div class="floating-user-table form-container">
         <h2>Add New Moon</h2>
         <div class="form-navigation">
             <a href="{{ route('moons.list') }}" class="back-button">Back to Moons</a>
@@ -36,22 +36,35 @@
 
             <div class="form-group">
                 <label for="discovery_year">Year Discovered:</label>
-                <input type="number" name="discovery_year" id="discovery_year" maxlength="4" pattern="[0-9]{4}" required
+                <input type="number" name="discovery_year" id="discovery_year" maxlength="4" pattern="[0-9]{4}"
                     oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
             </div>
 
             <div class="form-group">
                 <label for="discovery_by">Discovered By:</label>
-                <input type="text" name="discovery_by" id="discovery_by" required>
+                <input type="text" name="discovery_by" id="discovery_by">
             </div>
 
             <button type="submit" class="add-moon-button">Add Moon</button>
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
         </form>
     </div>
 
 @endsection {{-- End the content section --}}
 
 <style>
+    .form-container {
+        min-height: 420px !important;
+    }
+
     .two-column-form {
         display: grid;
         grid-template-columns: 1fr 1fr;
